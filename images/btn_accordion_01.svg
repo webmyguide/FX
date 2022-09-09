@@ -1,0 +1,18 @@
+<svg id="btn_accordion_01" xmlns="http://www.w3.org/2000/svg" width="60.06" height="60.06" viewBox="0 0 60.06 60.06">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #00a5cc;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 6px;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <rect id="長方形_1264_のコピー" data-name="長方形 1264 のコピー" class="cls-1" width="60.06" height="60.06" rx="30.03" ry="30.03"/>
+  <path id="シェイプ_1323_のコピー" data-name="シェイプ 1323 のコピー" class="cls-2" d="M1260.9,1329.78l-10.72-10.73-10.73,10.73" transform="translate(-1219.97 -1292.97)"/>
+</svg>

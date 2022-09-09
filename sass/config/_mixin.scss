@@ -1,0 +1,484 @@
+@charset "utf-8";
+// ===================================================================
+// mixinやらCSS3やら、extendも。
+// ===================================================================
+
+/*----------------------------------------------------
+	mixin
+----------------------------------------------------*/
+@mixin font_color($key:'base') {
+    color: map-get($font_color, $key);
+}
+
+//@mixinでメディアクエリを呼び出す
+@mixin mq($breakpoint: 'sm') {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+/*----------------------------------------------------
+	WordPress　ネイティブCSS
+----------------------------------------------------*/
+@mixin wpCss() {
+  strong { font-weight: bold; }
+  em { font-style: italic; }
+  blockquote {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 40px;
+    -webkit-margin-end: 40px;
+  }
+
+  .aligncenter {
+      display: block;
+      margin: 0 auto;
+  }
+  .alignright { float: right; }
+  .alignleft { float: left; }
+  /* clearfix */
+
+  .clearfix {
+      overflow: hidden;
+      zoom: 1;
+  }
+  .clearfix:after {
+      content: "";
+      display: block;
+      clear: both;
+  }
+}
+
+
+/* --- アニメーションベース --- */
+$fps: 60;
+$baseFps: 60;
+$magnificationFps:$fps/$baseFps;
+$oneSecond: 1/$fps;
+@mixin create_ani_base($name,$second,$delay:0){
+    .ani-#{$name} {
+        @include animation-name($name);
+        @include animation-duration(#{$oneSecond*$second}s);
+        @include animation-delay(#{($oneSecond*$delay)}s);
+        @include animation-timing-function(linear);
+        @include animation-iteration-count(initial);
+        @content;
+    }
+}
+
+/* --- アニメーションベース --- */
+@mixin balloon($name,$type:''){
+    .balloon#{$name} {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        background: $bg_color2 url('../images/thumb_balloon_01.png') no-repeat;
+        background-size: 66px auto;
+        background-position: 4px bottom;
+        width: 100%;
+        min-height: 108px;
+        padding: $margin_value2 $margin_value2 $margin_value2 84px;
+        font-size: 11px;
+
+        @include mq(md) {
+            background: $bg_color2 url('../images/thumb_balloon_pc_01.png') no-repeat;
+            background-size: 108px auto;
+            background-position: 18px bottom;
+            padding: $margin_value2 24px $margin_value2 136px;
+            font-size: 14px;
+            min-height: 150px;
+        }
+    }
+
+}
+
+@mixin btnArrow($type:''){
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%) rotate(-90deg);
+
+    @if $type == '2' {
+        background: url('../images/ico_arrow_02.png') no-repeat;
+    } @else {
+        background: url('../images/ico_arrow_01.png') no-repeat;
+    }
+
+    background-size: 14px auto;
+    width: 14px;
+    height: 14px;
+
+    @include mq(md) {
+        right: $margin_value3;
+        background-size: 22px auto;
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@mixin fz_vw($font_size:14, $viewport:1000){
+    font-size: $font_size * 1px;
+    font-size: get_vw($font_size, $viewport);
+}
+
+// 第一引数で基準となる画面幅のフォントサイズ、第二引数で基準となる画面幅を入力
+@function get_vw($size, $viewport:1000){
+    $rate: 100 / $viewport;
+    @return $rate * $size * 1vw;
+}
+
+@mixin title_common($type:''){
+    color: $font_color4;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: $margin_value2;
+
+    @include mq(md) {
+        font-size: 40px;
+        margin-bottom: 20px;
+    }
+}
+
+
+/*----------------------------------------------------
+	function
+----------------------------------------------------*/
+@function bor_color($key:'base') {
+    @return map-get($bor_color, $key);
+}
+
+// Round (四捨五入)
+@function round-decimal ($number, $digits: 0) {
+    @return to-fixed($number, $digits, 'round');
+}
+
+// Ceil (切り上げ)
+@function ceil-decimal ($number, $digits: 0) {
+    @return to-fixed($number, $digits, 'ceil');
+}
+
+// Floor (切り捨て)
+@function floor-decimal ($number, $digits: 0) {
+    @return to-fixed($number, $digits, 'floor');
+}
+
+@function to-fixed ($number, $digits: 0, $round: 'round') {
+    $n: 1;
+    // $number must be a number
+    @if type-of($number) != number {
+        @warn '#{ $number } is not a number.';
+        @return $number;
+    }
+    // $digits must be a unitless number
+    @if type-of($digits) != number {
+        @warn '#{ $digits } is not a number.';
+        @return $number;
+    } @else if not unitless($digits) {
+        @warn '#{ $digits } has a unit.';
+        @return $number;
+    }
+    @for $i from 1 through $digits {
+        $n: $n * 10;
+    }
+    @if $round == 'round' {
+        @return round($number * $n) / $n;
+    } @else if $round == 'ceil' {
+        @return ceil($number * $n) / $n;
+    } @else if $round == 'floor' {
+        @return floor($number * $n) / $n;
+    } @else {
+        @warn '#{ $round } is undefined keyword.';
+        @return $number;
+    }
+}
+
+
+/*----------------------------------------------------
+	extend
+----------------------------------------------------*/
+%inner {
+  width: 100%;
+  max-width: $base_width;
+  margin: 0 auto;
+}
+
+
+%display_table {
+  display: table;
+  width: 100%;
+
+  &__row {
+    display: table-row;
+  }
+
+  &__cell {
+    display: table-cell;
+  }
+}
+
+%btnCommon1 {
+    // @include linear-gradient(to top, #6ec620, #7dd822);
+    background: $accent_color1;
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+    border-radius: 5px;
+    border: none;
+    line-height: 1.4;
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+    box-shadow: 0 3px 1px $bg_color4;
+    // overflow: hidden;
+    font-weight: 600;
+    -webkit-appearance: none;
+    appearance: none;
+
+    @include mq(md) {
+        box-shadow: 0 5px 1px $bg_color4;
+        padding: $margin_value2;
+    }
+}
+
+%btnCommon2 {
+    background: $bg_color9;
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+    border-radius: 5px;
+    border: none;
+    line-height: 1.4;
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+    box-shadow: 0 3px 1px $bg_color4;
+    // overflow: hidden;
+    font-weight: 600;
+    -webkit-appearance: none;
+    appearance: none;
+
+    @include mq(md) {
+        box-shadow: 0 5px 1px $bg_color4;
+        padding: $margin_value2;
+    }
+}
+
+%btnCommon3 {
+    background: $bg_color4;
+    text-decoration: none;
+    color: $font_color1;
+    display: block;
+    border-radius: 5px;
+    line-height: 1.4;
+    text-align: center;
+    position: relative;
+    border: 2px solid #ffffff;
+    box-sizing: border-box;
+    box-shadow: 1px 0 1px $accent_color5,-1px 0 1px $accent_color5,0 1px 1px $accent_color5,0 -1px 1px $accent_color5;
+    // overflow: hidden;
+    font-weight: 600;
+
+    @include mq(md) {
+        padding: 10px;
+    }
+}
+
+
+%titleCommon1 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: url('../images/bg_title_single_02.jpg') repeat-y;
+    background-size: 500px auto;
+    color: $font_color2;
+    text-align: left;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.2;
+    width: 100%;
+    min-height: 33px;
+    border-bottom: 1px solid $accent_color6;
+    margin: $margin_value4 0 $margin_value3;
+    padding: #{$margin_value1 + 3} $margin_value1 $margin_value1 56px;
+
+
+    @include mq(md) {
+        background-size: 874px auto;
+        min-height: 56px;
+        font-size: 24px;
+        margin: $margin_value6 0 $margin_value6;
+        padding: #{$margin_value2 + 3} $margin_value2 $margin_value2 96px;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 55px;
+        height: 52px;
+        background: url('../images/title_single_02.png') no-repeat;
+        background-size: 55px auto;
+
+        @include mq(md) {
+            background-size: 92px auto;
+            width: 92px;
+            height: 86px;
+        }
+    }
+}
+
+%titleCommon2 {
+    position: relative;
+    color: $accent_color3;
+    text-align: left;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.2;
+    width: 100%;
+    margin: 0 0 $margin_value3;
+    padding: 0 0 0 $margin_value4;
+
+    @include mq(md) {
+        font-size: 20px;
+        margin: 0 0 $margin_value5;
+        padding: 0 0 0 $margin_value6;
+    }
+
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 0;
+        width: 12px;
+        height: 12px;
+        background: url('../images/title_single_03.png') no-repeat;
+        background-size: 12px auto;
+
+        @include mq(md) {
+            width: 20px;
+            height: 20px;
+            background-size: 20px auto;
+        }
+    }
+}
+//
+// %titleCommon3 {
+//     background: $accent_color4 url('../images/ico_title_single_01.png') no-repeat;
+//     background-size: 24px auto;
+//     background-position: 12px 13px;
+//     border-image-source:url("../images/bor_box_02.png");
+//     border-image-slice: 21 fill;
+//     border-image-width: 12px;
+//     border-image-repeat: round stretch;
+//     text-decoration: none;
+//     color: #ffffff;
+//     display: flex;
+//     align-items: center;
+//     min-height: 50px;
+//     font-size: 14px;
+//     line-height: 1.4;
+//     text-align: left;
+//     position: relative;
+//     font-weight: 600;
+//     margin-bottom: $margin_value3;
+//     padding: 8px $margin_value3 8px 44px;
+//
+//     @include mq(md) {
+//         background-size: 40px auto;
+//         background-position: 16px 10px;
+//         border-image-width: 21px;
+//         min-height: 60px;
+//         font-size: 14px;
+//         margin-bottom: $margin_value2;
+//         padding: 10px 16px 10px 68px;
+//     }
+// }
+
+
+%titlePage1 {
+    background: url('../images/bor_tit_03.png') repeat-x left bottom;
+    background-size: 25px auto;
+    position: relative;
+    line-height: 1.4;
+    font-weight: 600;
+    padding: 14px 0 10px 54px;
+    margin: $margin_value1 0 $margin_value2;
+    font-size: 16px;
+
+    @include mq(md) {
+        background-size: 34px auto;
+        padding: 10px 50px 16px 76px;
+        margin: 12px 0 20px;
+        font-size: 24px;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background: url('../images/bg_balloon_02.png') no-repeat left bottom;
+        background-size: 46px auto;
+        width: 46px;
+        height: 52px;
+
+        @include mq(md) {
+            background-size: 62px auto;
+            width: 62px;
+            height: 70px;
+        }
+    }
+}
+
+
+%bgCommon1 {
+    background: #ffffff;
+}
+
+
+%box1 {
+    background: #ffffff;
+    padding: $margin_value2;
+
+    @include mq(md) {
+        padding: 30px 40px;
+    }
+}
+
+%bgProduct {
+    background: #ffffff url('../images/bor_box_01.jpg') repeat-x left top;
+    background-size: 42px auto;
+
+    @include mq(md) {
+        background-size: 56px auto;
+    }
+}
+
+%boxTitle {
+    background: url('../images/bor_tit_02.png') no-repeat center bottom;
+    text-align: center;
+    line-height: 1.4;
+    background-size: contain;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 0px 20px;
+    font-size: 18px;
+
+    @include mq(md) {
+        background-size: 565px auto;
+        width: 90%;
+        margin: 0 auto;
+        padding: 40px 20px 36px;
+        font-size: 26px;
+    }
+
+    strong {
+        @extend .marker-01;
+    }
+}

@@ -1,0 +1,179 @@
+@charset "utf-8";
+// ===================================================================
+// 設定
+// ===================================================================
+
+
+// HTML5の場合は値を「false」から「true」にする
+$use_html5: false;
+
+
+
+// 汎用クラスを使用するか
+$use_extend_object: true;
+
+	// 簡易ロールオーバーの値
+	$opacity_value: .55;
+
+	// 余白調整用のクラスを使用するか
+	$use_spacing_classes: false;
+
+
+// 画像のパス
+$img_path: "../img/";
+
+
+// ベースフォント
+$base_font: "メイリオ", "Meiryo","游ゴシック", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "ＭＳ Ｐゴシック", "MS PGothic", Sans-Serif;
+$base_font_ie: '游明朝','Hiragino Mincho Pro',serif;
+
+
+// ページ全体の横幅
+$base_width: 940px;
+
+
+// 要素の基本下マージン
+$base_margin_bottom: 15px;
+
+
+// メインカラー（ベースカラー）
+$main_color: #f95a78;
+
+// サブカラー
+$sub_color: #ff9855;
+
+// アクセントカラー
+$accent_color1: #cc9742;//おおど色
+$accent_color2: #2da4cb;//水色
+$accent_color3: #1e529b;//青色
+$accent_color4: #fffb08;//黄色
+//----------------------------------------------------
+
+
+$accent_color5: #787c92;//青グレー色
+$accent_color6: #c9ae5d;//黄金色
+$accent_color7: #8ac7cf;//水色
+
+
+
+
+// $accent_color3: #3b9aff;
+
+
+
+
+$bg_color1: #edf1f4;//ライトグレー
+$bg_color2: #ffffff;//白
+$bg_color3: #4285b3;//青色
+$bg_color4: #e5e5e5;//ライトグレー
+$bg_color5: #ecf1fa;//薄水色
+$bg_color6: #003b77;//紺色
+$bg_color7: #fcfaf5;//薄肌色
+$bg_color8: #f3f4f5;//青ライトグレー
+$bg_color9: #00a5cc;//水色
+$bg_color10: #005ab6;//青色
+$bg_color11: #00559b;//紺色
+$bg_color12: #0059b6;//青色
+$bg_color13: #fff38f;//黄色
+$bg_color14: #0057b4;//青色
+$bg_color15: #f5f6f7;//ライトグレー
+
+
+
+
+//----------------------------------------------------
+
+
+$font_color1: #111111;
+$font_color2: #ffffff;
+$font_color3: $bg_color14;//青色
+$font_color4: #e83e34;//赤色
+$font_color5: #614415;//茶色
+$font_color6: #ad0f00;//赤色
+
+
+//----------------------------------------------------
+
+
+
+$bor_color1: #ffffff;
+$bor_color2: #00559b;//紺色
+$bor_color3: $font_color3;//青色
+$bor_color4: $bg_color4;//ライトグレー
+$bor_color5: #939393;//グレー
+$bor_color6: #c4c8ca;//ライトグレー
+//----------------------------------------------------
+
+
+
+$rank_color1: #805c3f;
+$rank_color2: #778287;
+$rank_color3: #593c27;
+$rank_color4: #593c27;
+
+$table_color_1: #f8f8f8;
+
+
+// ベーステキストカラー
+$font_color: (
+  'base': #666666,
+  '1': #66cc00,
+  '2': #ff9900,
+	'3': #fa2625
+);
+
+// ベースリンクカラー
+$link_color: #06f;
+$link_color_visited: #39f;
+$link_color_hover: #00f;
+$link_color_active: #00f;
+
+
+// ボーダーカラー
+$bor_color: (
+  'base': #dadada,
+	'1': #66cc00,
+	'2': #ff9900
+);
+
+
+// 付与するベンダープレフィックス
+$set_prefix: -webkit-, -moz-, -ms-, -o-, '';
+
+
+// 角丸の初期値
+$br_value: 6px;
+$br_value_pc: 6px;
+
+// マージン
+$margin_value1: 5px;
+$margin_value2: 10px;
+$margin_value3: 15px;
+$margin_value4: 20px;
+$margin_value5: 25px;
+$margin_value6: 30px;
+$margin_value7: 35px;
+$margin_value8: 40px;
+$margin_value9: 45px;
+$margin_value10: 50px;
+$margin_value11: 55px;
+$margin_value12: 60px;
+$margin_value_pc1: 6px;
+$margin_content_sp1: 20px;
+$margin_content_pc1: 40px;
+
+$md_width: 750;
+$lg_width: 1014;
+$xl_width: 1516;
+$xxl_width: 1920;
+$mv_bg_width: 2000;
+
+//ブレイクポイント
+$breakpoints: (
+  'se': 'screen and (min-width: 360px)',
+  'sm': 'screen and (min-width: 480px)',
+  'md': 'screen and (min-width: 768px)',
+  'lg': 'screen and (min-width: 945px)',
+  'mv_bg': 'screen and (min-width: 2000px)',
+  // 'xl': 'screen and (min-width: 1200px)',
+) !default;
